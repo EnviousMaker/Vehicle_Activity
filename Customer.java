@@ -1,19 +1,38 @@
 
-public class Car extends Vehicle {
-    private int numSeats;
+public class Customer {
+    private String name;
+    private String licenseNumber;
+    private Vehicle rentedVehicle; 
 
-    public Car(String vehicleId, String brand, double dailyRate, int numSeats) {
-        super(vehicleId, brand, dailyRate);
-        this.numSeats = numSeats;
+    public Customer(String name, String licenseNumber) {
+        this.name = name;
+        this.licenseNumber = licenseNumber;
+        this.rentedVehicle = null;
     }
 
-    @Override
-    public double calculateRentalCost(int days) {
-        return super.calculateRentalCost(days) * 1.10; // 10% surcharge
+    public void rentVehicle(Vehicle vehicle) {
+        this.rentedVehicle = vehicle;
     }
 
-    @Override
-    public void displayInfo() {
-        System.out.print("Car [ID=" + vehicleId + ", Brand=" + brand + ", Seats=" + numSeats + "]");
+    public void returnVehicle() {
+        this.rentedVehicle = null;
+    }
+
+    public void printRentalSummary(int days) {
+        if (rentedVehicle == null) {
+            System.out.println("No vehicle currently rented.");
+            return;
+        }
+        System.out.println("Customer: " + name + " (License: " + licenseNumber + ")");
+        System.out.print("Rented: " + rentedVehicle.getBrand() + " ");
+        if (rentedVehicle instanceof Car) {
+            System.out.println("Car");
+        } else if (rentedVehicle instanceof Motorcycle) {
+            System.out.println("Motorcycle");
+        } else {
+            System.out.println("Vehicle");
+        }
+        double totalCost = rentedVehicle.calculateRentalCost(days); 
+        System.out.printf("Total Cost for %d days: $%.2f%n", days, totalCost);
     }
 }
